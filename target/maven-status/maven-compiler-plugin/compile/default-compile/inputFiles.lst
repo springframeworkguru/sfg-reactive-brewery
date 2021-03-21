@@ -1,5 +1,5 @@
-/Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/SfgRestfulBreweryApplication.java
 /Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/web/model/BeerStyleEnum.java
+/Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/SfgReactiveBreweryApplication.java
 /Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/web/model/BeerPagedList.java
 /Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/domain/Customer.java
 /Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/web/controller/NotFoundException.java
@@ -8,7 +8,6 @@
 /Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/domain/Beer.java
 /Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/web/mappers/DateMapper.java
 /Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/repositories/BeerRepository.java
-/Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/config/TaskConfig.java
 /Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/web/controller/BeerController.java
 /Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/web/mappers/BeerMapper.java
 /Users/jt/src/springframework.guru/courses/reactive-spring/v2/sfg-reactive-brewery/src/main/java/guru/springframework/sfgrestbrewery/services/BeerService.java
