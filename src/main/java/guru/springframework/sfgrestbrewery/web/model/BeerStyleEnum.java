@@ -1,4 +1,4 @@
-package guru.springframework.sfgrestbrewery.web.model.v2;
+package guru.springframework.sfgrestbrewery.web.model;
 
 
 public enum BeerStyleEnum {

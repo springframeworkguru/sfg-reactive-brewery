@@ -1,6 +1,6 @@
 package guru.springframework.sfgrestbrewery.domain;
 
-import guru.springframework.sfgrestbrewery.web.model.v2.BeerStyleEnum;
+import guru.springframework.sfgrestbrewery.web.model.BeerStyleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

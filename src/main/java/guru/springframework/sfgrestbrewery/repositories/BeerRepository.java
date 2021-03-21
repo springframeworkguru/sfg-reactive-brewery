@@ -2,7 +2,7 @@ package guru.springframework.sfgrestbrewery.repositories;
 
 
 import guru.springframework.sfgrestbrewery.domain.Beer;
-import guru.springframework.sfgrestbrewery.web.model.v2.BeerStyleEnum;
+import guru.springframework.sfgrestbrewery.web.model.BeerStyleEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

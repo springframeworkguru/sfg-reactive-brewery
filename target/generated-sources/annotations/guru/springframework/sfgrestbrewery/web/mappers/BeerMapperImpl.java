@@ -4,14 +4,14 @@ import guru.springframework.sfgrestbrewery.domain.Beer;
 import guru.springframework.sfgrestbrewery.domain.Beer.BeerBuilder;
 import guru.springframework.sfgrestbrewery.web.model.BeerDto;
 import guru.springframework.sfgrestbrewery.web.model.BeerDto.BeerDtoBuilder;
-import guru.springframework.sfgrestbrewery.web.model.v2.BeerStyleEnum;
+import guru.springframework.sfgrestbrewery.web.model.BeerStyleEnum;
 import javax.annotation.processing.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-03-20T09:43:01-0400",
+    date = "2021-03-21T11:26:25-0400",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.6 (Oracle Corporation)"
 )
 @Component
