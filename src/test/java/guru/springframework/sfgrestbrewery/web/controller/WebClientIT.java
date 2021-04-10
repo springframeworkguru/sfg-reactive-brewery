@@ -37,6 +37,70 @@ public class WebClientIT {
     }
 
     @Test
+    void testListBeers() throws InterruptedException {
+
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
+        Mono<BeerPagedList> beerPagedListMono = webClient.get().uri("/api/v1/beer")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve().bodyToMono(BeerPagedList.class);
+
+        beerPagedListMono.publishOn(Schedulers.parallel()).subscribe(beerPagedList -> {
+
+            beerPagedList.getContent().forEach(beerDto -> System.out.println(beerDto.toString()));
+
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await(1000, TimeUnit.MILLISECONDS);
+        assertThat(countDownLatch.getCount()).isEqualTo(0);
+    }
+
+    @Test
+    void testListBeersPageSize5() throws InterruptedException {
+
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
+        Mono<BeerPagedList> beerPagedListMono = webClient.get().uri(uriBuilder -> {
+            return uriBuilder.path("/api/v1/beer").queryParam("pageSize", "5").build();
+        })
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve().bodyToMono(BeerPagedList.class);
+
+        beerPagedListMono.publishOn(Schedulers.parallel()).subscribe(beerPagedList -> {
+
+            beerPagedList.getContent().forEach(beerDto -> System.out.println(beerDto.toString()));
+
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await(1000, TimeUnit.MILLISECONDS);
+        assertThat(countDownLatch.getCount()).isEqualTo(0);
+    }
+
+    @Test
+    void testListBeersByName() throws InterruptedException {
+
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
+        Mono<BeerPagedList> beerPagedListMono = webClient.get().uri(uriBuilder -> {
+            return uriBuilder.path("/api/v1/beer").queryParam("beerName", "Mango Bobs").build();
+        })
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve().bodyToMono(BeerPagedList.class);
+
+        beerPagedListMono.publishOn(Schedulers.parallel()).subscribe(beerPagedList -> {
+
+            beerPagedList.getContent().forEach(beerDto -> System.out.println(beerDto.toString()));
+
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await(1000, TimeUnit.MILLISECONDS);
+        assertThat(countDownLatch.getCount()).isEqualTo(0);
+    }
+
+    @Test
     void getBeerByUPC() throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -74,25 +138,4 @@ public class WebClientIT {
         assertThat(countDownLatch.getCount()).isEqualTo(0);
     }
 
-    @Test
-    void testListBeers() throws InterruptedException {
-
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-
-        Mono<BeerPagedList> beerPagedListMono = webClient.get().uri("/api/v1/beer")
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve().bodyToMono(BeerPagedList.class);
-
-
-//        BeerPagedList pagedList = beerPagedListMono.block();
-//        pagedList.getContent().forEach(beerDto -> System.out.println(beerDto.toString()));
-        beerPagedListMono.publishOn(Schedulers.parallel()).subscribe(beerPagedList -> {
-
-            beerPagedList.getContent().forEach(beerDto -> System.out.println(beerDto.toString()));
-
-            countDownLatch.countDown();
-        });
-
-        countDownLatch.await();
-    }
 }
