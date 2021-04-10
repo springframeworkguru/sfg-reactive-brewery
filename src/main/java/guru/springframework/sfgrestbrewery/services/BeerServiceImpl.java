@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -72,17 +73,12 @@ public class BeerServiceImpl implements BeerService {
 
     @Cacheable(cacheNames = "beerCache", key = "#beerId", condition = "#showInventoryOnHand == false ")
     @Override
-    public BeerDto getById(UUID beerId, Boolean showInventoryOnHand) {
-//        if (showInventoryOnHand) {
-//            return beerMapper.beerToBeerDtoWithInventory(
-//                    beerRepository.findById(beerId).orElseThrow(NotFoundException::new)
-//            );
-//        } else {
-//            return beerMapper.beerToBeerDto(
-//                    beerRepository.findById(beerId).orElseThrow(NotFoundException::new)
-//            );
-//        }
-        return null;
+    public Mono<BeerDto> getById(Integer beerId, Boolean showInventoryOnHand) {
+        if (showInventoryOnHand) {
+            return beerRepository.findById(beerId).map(beerMapper::beerToBeerDtoWithInventory);
+        } else {
+            return beerRepository.findById(beerId).map(beerMapper::beerToBeerDto);
+        }
     }
 
     @Override
@@ -111,7 +107,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void deleteBeerById(UUID beerId) {
+    public void deleteBeerById(Integer beerId) {
         beerRepository.deleteById(beerId);
     }
 }
