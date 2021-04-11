@@ -40,6 +40,49 @@ public class WebClientIT {
     }
 
     @Test
+    void testUpdateBeer() throws InterruptedException {
+
+        CountDownLatch countDownLatch = new CountDownLatch(3);
+
+        webClient.get().uri("/api/v1/beer")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(BeerPagedList.class)
+                .publishOn(Schedulers.single())
+                .subscribe(pagedList -> {
+                    countDownLatch.countDown();
+
+                    //get existing beer
+                    BeerDto beerDto = pagedList.getContent().get(0);
+
+                    BeerDto updatePayload = BeerDto.builder().beerName("JTsUpdate")
+                            .beerStyle(beerDto.getBeerStyle())
+                            .upc(beerDto.getUpc())
+                            .price(beerDto.getPrice())
+                            .build();
+
+                    //update existing beer
+                    webClient.put().uri("/api/v1/beer/" + beerDto.getId() )
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .body(BodyInserters.fromValue(updatePayload))
+                            .retrieve().toBodilessEntity()
+                            .flatMap(responseEntity -> {
+                                //get and verify update
+                                countDownLatch.countDown();
+                                return webClient.get().uri("/api/v1/beer/" + beerDto.getId())
+                                        .accept(MediaType.APPLICATION_JSON)
+                                        .retrieve().bodyToMono(BeerDto.class);
+                            }) .subscribe(savedDto -> {
+                                    assertThat(savedDto.getBeerName()).isEqualTo("JTsUpdate");
+                                    countDownLatch.countDown();
+                    });
+                });
+
+        countDownLatch.await(1000, TimeUnit.MILLISECONDS);
+        assertThat(countDownLatch.getCount()).isEqualTo(0);
+    }
+
+    @Test
     void testSaveBeer() throws InterruptedException {
 
         CountDownLatch countDownLatch = new CountDownLatch(1);
