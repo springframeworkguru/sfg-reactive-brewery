@@ -23,6 +23,16 @@ public class BeerHandlerV2 {
     private final BeerService beerService;
     private final Validator validator;
 
+    public Mono<ServerResponse> updateBeer(ServerRequest request){
+        return request.bodyToMono(BeerDto.class).doOnNext(this::validate)
+                .flatMap(beerDto -> {
+                    return beerService.updateBeer(Integer.valueOf(request.pathVariable("beerId")), beerDto);
+                }).flatMap(savedBeerDto -> {
+                    log.debug("Saved Beer Id: {}", savedBeerDto.getId());
+                    return ServerResponse.noContent().build();
+                });
+    }
+
     public Mono<ServerResponse> saveNewBeer(ServerRequest request){
         Mono<BeerDto> beerDtoMono = request.bodyToMono(BeerDto.class).doOnNext(this::validate);
 

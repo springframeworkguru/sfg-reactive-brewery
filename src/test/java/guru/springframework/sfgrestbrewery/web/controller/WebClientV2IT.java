@@ -41,6 +41,44 @@ public class WebClientV2IT {
     }
 
     @Test
+    void testUpdateBeer() throws InterruptedException {
+
+        final String newBeerName = "JTs Beer";
+        final Integer beerId = 1;
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+
+        webClient.put().uri(BeerRouterConfig.BEER_V2_URL + "/" + beerId)
+                .accept(MediaType.APPLICATION_JSON).body(BodyInserters
+                .fromValue(BeerDto.builder()
+                        .beerName(newBeerName)
+                        .upc("1233455")
+                        .beerStyle("PALE_ALE")
+                        .price(new BigDecimal("8.99"))
+                        .build()))
+                .retrieve().toBodilessEntity()
+                .subscribe(responseEntity -> {
+                    assertThat(responseEntity.getStatusCode().is2xxSuccessful());
+                    countDownLatch.countDown();
+                });
+
+        //wait for update thread to complete
+        countDownLatch.await(500, TimeUnit.MILLISECONDS);
+
+        webClient.get().uri(BeerRouterConfig.BEER_V2_URL + "/" + beerId)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve().bodyToMono(BeerDto.class)
+                .subscribe(beer -> {
+                    assertThat(beer).isNotNull();
+                    assertThat(beer.getBeerName()).isNotNull();
+                    assertThat(beer.getBeerName()).isEqualTo(newBeerName);
+                    countDownLatch.countDown();
+                });
+
+        countDownLatch.await(1000, TimeUnit.MILLISECONDS);
+        assertThat(countDownLatch.getCount()).isEqualTo(0);
+    }
+
+    @Test
     void testSaveBeer() throws InterruptedException {
 
         CountDownLatch countDownLatch = new CountDownLatch(1);
