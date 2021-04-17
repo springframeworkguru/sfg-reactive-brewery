@@ -41,6 +41,32 @@ public class WebClientV2IT {
     }
 
     @Test
+    void testUpdateBeerNotFound() throws InterruptedException {
+
+        final String newBeerName = "JTs Beer";
+        final Integer beerId = 999;
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
+        webClient.put().uri(BeerRouterConfig.BEER_V2_URL + "/" + beerId)
+                .accept(MediaType.APPLICATION_JSON).body(BodyInserters
+                .fromValue(BeerDto.builder()
+                        .beerName(newBeerName)
+                        .upc("1233455")
+                        .beerStyle("PALE_ALE")
+                        .price(new BigDecimal("8.99"))
+                        .build()))
+                .retrieve().toBodilessEntity()
+                .subscribe(responseEntity -> {
+                    assertThat(responseEntity.getStatusCode().is2xxSuccessful());
+                }, throwable -> {
+                    countDownLatch.countDown();
+                });
+
+        countDownLatch.await(1000, TimeUnit.MILLISECONDS);
+        assertThat(countDownLatch.getCount()).isEqualTo(0);
+    }
+
+    @Test
     void testUpdateBeer() throws InterruptedException {
 
         final String newBeerName = "JTs Beer";
