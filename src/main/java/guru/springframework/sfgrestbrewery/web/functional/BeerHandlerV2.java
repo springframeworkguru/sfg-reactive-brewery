@@ -1,6 +1,7 @@
 package guru.springframework.sfgrestbrewery.web.functional;
 
 import guru.springframework.sfgrestbrewery.services.BeerService;
+import guru.springframework.sfgrestbrewery.web.controller.NotFoundException;
 import guru.springframework.sfgrestbrewery.web.model.BeerDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,4 +78,25 @@ public class BeerHandlerV2 {
                     return ServerResponse.ok().bodyValue(beerDto);
                 }).switchIfEmpty(ServerResponse.notFound().build());
     }
+
+    public Mono<ServerResponse> deleteBeer(ServerRequest request) {
+        return beerService.reactiveDeleteById(Integer.valueOf(request.pathVariable("beerId")))
+                .flatMap(voidMono -> {
+                    return ServerResponse.ok().build();
+                }).onErrorResume(e -> e instanceof NotFoundException,
+                        e -> ServerResponse.notFound().build());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
